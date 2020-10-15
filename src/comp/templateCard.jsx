@@ -7,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { useRouter } from 'next/router';
 import AppConst from "@lib/appConst";
+import Chip from '@material-ui/core/Chip';
 
 const useStyles = makeStyles({
   root: {
@@ -36,6 +37,11 @@ const templateCard = (props) => {
     card : {
       className: classes.root
     },
+    cardChip: {
+      size:"small",
+      label:"カテゴリー",
+      color:"secondary",
+    },
     cardTitle : {
       variant   : "h5",
       component : "h2",
@@ -47,6 +53,7 @@ const templateCard = (props) => {
     <Card {...compProps.card}>
       <CardActionArea onClick={() => onClickTemplateCard(props.templateId)}>
       <CardContent>
+        <Chip {...compProps.cardChip}/>
         <Typography {...compProps.cardTitle}>
           {props.templateTitle}
         </Typography>

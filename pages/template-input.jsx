@@ -10,6 +10,8 @@ import { makeStyles } from '@material-ui/core';
 import HelpIcon from '@material-ui/icons/Help';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import HelpDialog from '@comp/helpDialog';
+import CategoryEntryDialog from '@comp/categoryEntryDialog';
+import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles((theme) => ({
   mainContent: {
@@ -49,10 +51,11 @@ const templateInput = () => {
     category_id : null,
   });
 
-  /** エラーメッセージ */
+  /** 画面パラメータ */
   const [pageProps, setPageProps] = useState({
     errorMessage: null,
     helpDialogOpen: false,
+    categoryEntryDialogOpen: false,
   });
 
   /** 選択可能カテゴリー一覧 */
@@ -63,6 +66,15 @@ const templateInput = () => {
     }
   ]
 
+  const handleChangeCategory = (e) => {
+    //新規登録カテゴリーIDの場合、ダイアログオープン
+    if (AppConst.CATEGORY_ID.ENTRY === e.target.value) {
+      setPageProps({...pageProps, categoryEntryDialogOpen: true});
+      return;
+    }
+    setTemplate({...template, category_id: e.target.value})
+  }
+
   /** テンプレートの保存処理 */
   const saveTemplate = () => {
     if(isErrorSave()) {return;}
@@ -70,6 +82,15 @@ const templateInput = () => {
       pathname : AppConst.URL.TEMPLATE_SHOW,
       query :  {template_id : template}
     })
+  }
+
+  /** カテゴリーの登録処理 */
+  const handleSaveCategory = (category) => {
+    //TODO サーバーの保存処理
+    //カテゴリーリストの再取得
+    setTemplate({...template, category_id: category.categoryId})
+    setPageProps({...pageProps, categoryEntryDialogOpen: false})
+
   }
 
   /** 保存処理のエラーチェック */
@@ -108,7 +129,7 @@ const templateInput = () => {
       variant: "outlined",
       select: true,
       size:"small",
-      onChange: (e) => setTemplate({...template, category_id: e.target.value})
+      onChange: handleChangeCategory
     },
     template_contents: {
       label: "テンプレート内容",
@@ -132,7 +153,29 @@ const templateInput = () => {
     helpDialog: {
       open: pageProps.helpDialogOpen,
       onClose: () => setPageProps({...pageProps, helpDialogOpen: false})
+    },
+    categoryEntryDialog: {
+      open : pageProps.categoryEntryDialogOpen,
+      onClose: () => setPageProps({...pageProps, categoryEntryDialogOpen: false}),
+      onSave: (category) => handleSaveCategory(category)
     }
+  }
+
+  /**
+   * カテゴリーメニューの取得
+   */
+  const getCategoryMenu = () => {
+    const dispCategoryList = categoryList.concat();
+    dispCategoryList.push({
+      id    : AppConst.CATEGORY_ID.ENTRY,
+      title : <><AddIcon />新規追加</>
+    });
+
+    return (
+      dispCategoryList.map(category => (
+        <MenuItem key={category.id} value={category.id}>{category.title}</MenuItem>
+      ))
+    )
   }
 
   return (
@@ -141,9 +184,7 @@ const templateInput = () => {
       <Box {...compProps.mainContent}>
         <TextField {...compProps.title} />
         <TextField {...compProps.category} >
-          {categoryList.map(category => (
-            <MenuItem value={category.id}>{category.title}</MenuItem>
-          ))}
+          {getCategoryMenu()}
         </TextField>
 
         <Box {...compProps.template_description}>
@@ -154,6 +195,7 @@ const templateInput = () => {
       </Box>
 
       <HelpDialog {...compProps.helpDialog} />
+      <CategoryEntryDialog {...compProps.categoryEntryDialog} />
     </>
   )
 }

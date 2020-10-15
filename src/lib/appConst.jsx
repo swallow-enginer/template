@@ -1,25 +1,38 @@
 export default Object.freeze({
+  CATEGORY_ID: {
+    ENTRY: -1
+  },
   SCREEN: {
     HOME     : 0,
     REGISTER : 1
   },
 
   URL: {
-    INDEX        : "/",
-    HOME         : "/home",
+    INDEX            : "/",
+    HOME             : "/home",
     TEMPLATE_INPUT   : "/template-input",
-    SEARCH       : "/search",
     TEMPLATE_SHOW    : "/template-show",
+    SEARCH           : "/search",
   },
 
   API: {
-    FETCH_URL :"/api/fetch-url"
+    TEMPLATE :"/api/template"
   },
 
-  TEMPLATE_INPUT_TAB: {
-    GATHERING  : "情報収集",
-    PLAN       : "行動計画",
-    EVALUATION : "評価",
+  /** テンプレート一覧の並び順 */
+  TEMPLATE_LIST_SORT: {
+    NEW : "new",
+    OLD : "old",
+  },
+
+  URL_QUERY_TYPE: {
+    ONE: "one",
+    LIST: "list"
+  },
+
+  /** HTTPステータスコード */
+  HTTP_STATUS_CODE: {
+    PRECONDITION_FAILED:412, //クエリパラーメータがなかった場合
   },
 
   REGISTER_DATA: {

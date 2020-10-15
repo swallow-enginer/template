@@ -14,6 +14,7 @@ import React from 'react';
 import appConst from "@lib/appConst";
 import { useRouter } from 'next/router';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { SettingsApplicationsTwoTone } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,6 +60,10 @@ export default function ButtonAppBar(props) {
       //検索画面
       case appConst.URL.SEARCH:
         return getSearchAppBar();
+      
+        //タスク表示画面
+      case appConst.URL.TEMPLATE_SHOW:
+        return getTemplateShowAppBar();
     }
   }
 
@@ -100,6 +105,23 @@ export default function ButtonAppBar(props) {
           <Box ml={2}><Button {...compProps.headerButton}>
             <AddIcon />テンプレート追加
           </Button></Box>
+      </>
+    )
+  }
+
+    /**
+   * テンプレート表示画面のヘッダー
+   */
+  const getTemplateShowAppBar = () => {
+    return (
+      <>
+        <ButtonBase {...compProps.arrowBackButton}><ArrowBackIcon /></ButtonBase>
+        <Typography {...compProps.headerTitle}>
+            テンプレート内容
+          </Typography>
+        <Box ml={2}><Button {...compProps.headerButton}>
+          <SaveIcon />編集
+        </Button></Box>
       </>
     )
   }
